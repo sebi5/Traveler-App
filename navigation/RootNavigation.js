@@ -1,50 +1,95 @@
-import { Notifications } from 'expo';
 import React from 'react';
-import { StackNavigator } from 'react-navigation';
+import {
+  Platform
+} from 'react-native';
+import {
+  Ionicons,
+  Entypo,
+  FontAwesome
+} from '@expo/vector-icons';
+import {
+  TabNavigator,
+  TabBarBottom
+} from 'react-navigation';
 
-import MainTabNavigator from './MainTabNavigator';
-import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
+import Colors from '../constants/Colors';
 
-const RootStackNavigator = StackNavigator(
-  {
-    Main: {
-      screen: MainTabNavigator,
-    },
+import NearbyScreen from '../screens/NearbyScreen';
+import FeedScreen from '../screens/FeedScreen';
+import MessageScreen from '../screens/MessageScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+
+export default TabNavigator({
+  Nearby: {
+    screen: NearbyScreen,
+    navigationOptions: {
+      tabBarLabel: 'Nearby'
+    }
   },
-  {
-    navigationOptions: () => ({
-      headerTitleStyle: {
-        fontWeight: 'normal',
-      },
-    }),
+  Feed: {
+    screen: FeedScreen,
+    navigationOptions: {
+      tabBarLabel: 'Feed'
+    }
+  },
+  Message: {
+    screen: MessageScreen,
+    navigationOptions: {
+      tabBarLabel: 'Message'
+    }
+  },
+  Profile: {
+    screen: ProfileScreen,
+    navigationOptions: {
+      tabBarLabel: 'Profile'
+    }
   }
-);
-
-export default class RootNavigator extends React.Component {
-  componentDidMount() {
-    this._notificationSubscription = this._registerForPushNotifications();
-  }
-
-  componentWillUnmount() {
-    this._notificationSubscription && this._notificationSubscription.remove();
-  }
-
-  render() {
-    return <RootStackNavigator />;
-  }
-
-  _registerForPushNotifications() {
-    // Send our push token over to our backend so we can receive notifications
-    // You can comment the following line out if you want to stop receiving
-    // a notification every time you open the app. Check out the source
-    // for this function in api/registerForPushNotificationsAsync.js
-    registerForPushNotificationsAsync();
-
-    // Watch for incoming notifications
-    this._notificationSubscription = Notifications.addListener(this._handleNotification);
-  }
-
-  _handleNotification = ({ origin, data }) => {
-    console.log(`Push notification ${origin} with data: ${JSON.stringify(data)}`);
-  };
-}
+}, {
+  navigationOptions: ({ navigation }) => ({
+    tabBarIcon: ({ focused }) => {
+      const { routeName } = navigation.state;
+      switch (routeName) {
+      case 'Nearby':
+        return (
+          <Entypo
+            name="location"
+            size={26}
+            style={{ marginBottom: -3 }}
+            color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+          />
+        );
+      case 'Feed':
+        return (
+          <FontAwesome
+            name="feed"
+            size={28}
+            style={{ marginBottom: -3 }}
+            color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+          />
+        );
+      case 'Message':
+        return (
+          <Ionicons
+            name="ios-chatbubbles"
+            size={28}
+            style={{ marginBottom: -3 }}
+            color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+          />
+        );
+      case 'Profile':
+        return (
+          <Ionicons
+            name="md-settings"
+            size={28}
+            style={{ marginBottom: -3 }}
+            color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+          />
+        );
+      }
+    }
+  }),
+  tabBarComponent: TabBarBottom,
+  tabBarPosition: 'bottom',
+  animationEnabled: false,
+  swipeEnabled: false
+});
