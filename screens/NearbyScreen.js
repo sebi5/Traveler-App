@@ -15,6 +15,17 @@ import {
   Permissions
 } from 'expo';
 import ActionSheet from 'react-native-actionsheet';
+import Pusher from 'pusher-js/react-native';
+
+var pusher = new Pusher('01796276b8f440d420a2', {
+  cluster: 'ap1',
+  encrypted: true
+});
+var channel = pusher.subscribe('my-channel');
+channel.bind('my-event', function(data) {
+  alert(data.message);
+});
+
 
 const ACTIONSHEET_TITLE = 'Update List';
 const ACTIONSHEET_OPTIONS = ['Hide My Location', 'View All', 'View Males', 'View Females', 'Cancel'];
