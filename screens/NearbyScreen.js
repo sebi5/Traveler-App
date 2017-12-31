@@ -3,8 +3,12 @@ import {
   Platform,
   View,
   Text,
+  Button,
   StyleSheet
 } from 'react-native';
+import {
+  Icon
+} from 'react-native-elements';
 import {
   Constants,
   Location,
@@ -13,7 +17,25 @@ import {
 
 export default class NearbyScreen extends React.Component {
   static navigationOptions = {
-    title: 'Nearby'
+    title: 'Nearby',
+    headerLeft: (
+      <Icon
+        name="sync"
+        type="octicon"
+        underlayColor="#0000"
+        iconStyle={{marginLeft: 14}}
+        onPress={() => console.log('hello')}
+      />
+    ),
+    headerRight: (
+      <Icon
+        name="gear"
+        type="octicon"
+        underlayColor="#0000"
+        iconStyle={{marginRight: 7}}
+        onPress={() => console.log('hello')}
+      />
+    )
   };
 
   state = {
@@ -44,6 +66,7 @@ export default class NearbyScreen extends React.Component {
   };
 
   render() {
+    const { navigate } = this.props.navigation;
     let text = 'Waiting..';
     if (this.state.errorMessage) {
       text = this.state.errorMessage;
@@ -54,6 +77,10 @@ export default class NearbyScreen extends React.Component {
       <View style={styles.container}>
         <Text>Nearby</Text>
         <Text>{text}</Text>
+        <Button
+          title="Go to Profile"
+          onPress={ () => navigate('Profile') }
+        />
       </View>
     );
   }

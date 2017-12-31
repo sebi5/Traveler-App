@@ -14,14 +14,14 @@ import {
 
 import Colors from '../constants/Colors';
 
-import NearbyScreen from '../screens/NearbyScreen';
+import NearbyStack from '../screens/NearbyStack';
 import FeedScreen from '../screens/FeedScreen';
 import MessageScreen from '../screens/MessageScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 
 export default TabNavigator({
   Nearby: {
-    screen: NearbyScreen,
+    screen: NearbyStack,
     navigationOptions: {
       tabBarLabel: 'Nearby'
     }
