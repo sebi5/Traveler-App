@@ -3,6 +3,7 @@ import {
   Platform,
   View,
   Text,
+  Button,
   StyleSheet
 } from 'react-native';
 import {
@@ -44,6 +45,7 @@ export default class NearbyScreen extends React.Component {
   };
 
   render() {
+    const { navigate } = this.props.navigation;
     let text = 'Waiting..';
     if (this.state.errorMessage) {
       text = this.state.errorMessage;
@@ -54,6 +56,10 @@ export default class NearbyScreen extends React.Component {
       <View style={styles.container}>
         <Text>Nearby</Text>
         <Text>{text}</Text>
+        <Button
+          title="Go to Profile"
+          onPress={ () => navigate('Profile') }
+        />
       </View>
     );
   }
