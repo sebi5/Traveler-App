@@ -4,11 +4,23 @@ import {
   Text,
   StyleSheet
 } from 'react-native';
+import {
+  Icon
+} from 'react-native-elements'
 
 export default class ProfileScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Profile'
-  };
+  static navigationOptions = ({ navigation }) => ({
+    title: 'Profile',
+    headerLeft: (
+      <Icon
+        name="chevron-left"
+        type="octicon"
+        underlayColor="#0000"
+        iconStyle={{marginLeft: 14}}
+        onPress={() => navigation.goBack()}
+      />
+    )
+  });
 
   render() {
     return (
