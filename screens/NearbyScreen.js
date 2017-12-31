@@ -14,6 +14,14 @@ import {
   Location,
   Permissions
 } from 'expo';
+import ActionSheet from 'react-native-actionsheet';
+
+const ACTIONSHEET_TITLE = 'Update List';
+const ACTIONSHEET_OPTIONS = ['Hide My Location', 'View All', 'View Males', 'View Females', 'Cancel'];
+const CANCEL_INDEX = 4;
+const DESTRUCTIVE_INDEX = 4;
+
+let showActionSheet = null;
 
 export default class NearbyScreen extends React.Component {
   static navigationOptions = {
@@ -33,15 +41,32 @@ export default class NearbyScreen extends React.Component {
         type="octicon"
         underlayColor="#0000"
         iconStyle={{marginRight: 7}}
-        onPress={() => console.log('hello')}
+        onPress={() => showActionSheet()}
       />
     )
   };
 
-  state = {
-    location: null,
-    errorMessage: null
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      location: null,
+      errorMessage: null,
+      selected: ''
+    };
+    this.handlePress = this.handlePress.bind(this);
+    this.showActionSheet = this.showActionSheet.bind(this);
+    showActionSheet = this.showActionSheet;
+  }
+
+  showActionSheet() {
+    this.ActionSheet.show();
+  }
+
+  handlePress(i) {
+    this.setState({
+      selected: i
+    });
+  }
 
   componentWillMount() {
      if (Platform.OS === 'android' && !Constants.isDevice) {
@@ -80,6 +105,14 @@ export default class NearbyScreen extends React.Component {
         <Button
           title="Go to Profile"
           onPress={ () => navigate('Profile') }
+        />
+        <ActionSheet
+          ref={actionSheet => this.ActionSheet = actionSheet}
+          title={ACTIONSHEET_TITLE}
+          options={ACTIONSHEET_OPTIONS}
+          cancelButtonIndex={CANCEL_INDEX}
+          destructiveButtonIndex={DESTRUCTIVE_INDEX}
+          onPress={this.handlePress}
         />
       </View>
     );
