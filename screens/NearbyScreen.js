@@ -7,6 +7,9 @@ import {
   StyleSheet
 } from 'react-native';
 import {
+  Icon
+} from 'react-native-elements';
+import {
   Constants,
   Location,
   Permissions
@@ -14,7 +17,25 @@ import {
 
 export default class NearbyScreen extends React.Component {
   static navigationOptions = {
-    title: 'Nearby'
+    title: 'Nearby',
+    headerLeft: (
+      <Icon
+        name="sync"
+        type="octicon"
+        underlayColor="#0000"
+        iconStyle={{marginLeft: 14}}
+        onPress={() => console.log('hello')}
+      />
+    ),
+    headerRight: (
+      <Icon
+        name="gear"
+        type="octicon"
+        underlayColor="#0000"
+        iconStyle={{marginRight: 7}}
+        onPress={() => console.log('hello')}
+      />
+    )
   };
 
   state = {
