@@ -6,19 +6,14 @@ import {
 } from 'react-native';
 import {
   Icon
-} from 'react-native-elements'
+} from 'react-native-elements';
+import NavBackButton from '../components/NavBackButton';
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: 'Profile',
     headerLeft: (
-      <Icon
-        name="chevron-left"
-        type="octicon"
-        underlayColor="#0000"
-        iconStyle={{marginLeft: 14}}
-        onPress={() => navigation.goBack()}
-      />
+      <NavBackButton navigation={navigation} />
     )
   });
 
