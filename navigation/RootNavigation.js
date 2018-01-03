@@ -14,7 +14,7 @@ import {
 
 import Colors from '../constants/Colors';
 
-import NearbyStack from '../screens/NearbyStack';
+import NearbyStack from './NearbyStack';
 import FeedScreen from '../screens/FeedScreen';
 import MessageScreen from '../screens/MessageScreen';
 import ProfileScreen from '../screens/ProfileScreen';
