@@ -3,11 +3,22 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
+import * as firebase from 'firebase';
 
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
   };
+
+  componentWillMount() {
+    const config = {
+      apiKey: 'AIzaSyCvgtrI0fn0FHBYiIn4spb5Ac8vg1Ucd4g',
+      authDomain: 'traveler-84bf6.firebaseapp.com',
+      databaseURL: 'https://traveler-84bf6.firebaseio.com',
+      storageBucket: 'gs://traveler-84bf6.appspot.com',
+    };
+    firebase.initializeApp(config);
+  }
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
