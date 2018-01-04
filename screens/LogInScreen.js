@@ -12,6 +12,7 @@ import {
   Image,
 } from 'react-native';
 import NavBackButton from '../components/NavBackButton';
+import * as firebase from 'firebase';
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -24,17 +25,20 @@ export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loginData: '',
-      passData: '',
+      email: '',
+      password: '',
       isLoading: false,
       message: ''
     };
   }
 
   _onLoginPressed = () => {
+    const { email, password } = this.state;
     Keyboard.dismiss;
-    const query = urlForQueryAndPage(this.state.loginData, this.state.passData, 'login');
-    this._executeQuery(query);
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .catch((error) => {
+      alert(error.message);
+    });
   };
 
   render() {
@@ -45,8 +49,8 @@ export default class LoginScreen extends React.Component {
         <Text style={styles.description}>
           Please Login
         </Text>
-        <TextInput style={styles.login} placeholder="email" />
-        <TextInput style={styles.pass} placeholder='password' secureTextEntry />
+        <TextInput style={styles.login} placeholder="email" onChangeText={(text) => this.setState({ email: text })} />
+        <TextInput style={styles.pass} placeholder='password' onChangeText={(text) => this.setState({ password: text })} secureTextEntry />
         <TouchableOpacity onPress={this._onLoginPressed} style={styles.submitButton}>
           <Text style={styles.submitButtonText}>Login</Text>
         </TouchableOpacity>
