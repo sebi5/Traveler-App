@@ -18,6 +18,7 @@ import RadioForm, {
   RadioButtonLabel
 } from 'react-native-simple-radio-button';
 import NavBackButton from '../components/NavBackButton';
+import * as firebase from 'firebase';
 
 export default class SignUpScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -30,17 +31,29 @@ export default class SignUpScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loginData: '',
-      passData: '',
+      name: '',
+      email: '',
+      password: '',
       isLoading: false,
       message: ''
     };
   }
 
   _onLoginPressed = () => {
-    Keyboard.dismiss;
-    const query = urlForQueryAndPage(this.state.loginData, this.state.passData, 'signup');
-    this._executeQuery(query);
+    const { name, email, password } = this.state;
+    Keyboard.dismiss
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(() => {
+      const uid = firebase.auth().currentUser.uid;
+      firebase.database().ref('users/' + uid).set({
+        username: name,
+        email: email,
+      });
+      alert('success');
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
   };
 
   render() {
@@ -51,9 +64,9 @@ export default class SignUpScreen extends React.Component {
         keyboardDismissMode="on-drag"
         contentContainerStyle={styles.container}
       >
-        <TextInput style={styles.textInput} placeholder="Your name" />
-        <TextInput style={styles.textInput} placeholder="Your email" />
-        <TextInput style={styles.textInput} placeholder="Choose a password" secureTextEntry />
+        <TextInput style={styles.textInput} placeholder="Your name" onChangeText={(text) => this.setState({ name: text })} />
+        <TextInput style={styles.textInput} placeholder="Your email" onChangeText={(text) => this.setState({ email: text })} />
+        <TextInput style={styles.textInput} placeholder="Choose a password" onChangeText={(text) => this.setState({ password: text })} secureTextEntry />
         <RadioForm
           radio_props={[{ label: 'Male ♂', value: 0 }, { label: 'Female ♀', value: 1 }]}
           initial={0}
