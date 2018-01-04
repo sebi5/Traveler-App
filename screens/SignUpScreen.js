@@ -17,13 +17,7 @@ import RadioForm, {
   RadioButtonInput,
   RadioButtonLabel
 } from 'react-native-simple-radio-button';
-
 import NavBackButton from '../components/NavBackButton';
-
-function urlForQueryAndPage(key, value, type) {
-
-  return 'https://url.com/reactnative.php?req=' + type;
-};
 
 export default class SignUpScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -42,33 +36,6 @@ export default class SignUpScreen extends React.Component {
       message: ''
     };
   }
-
-  _handleResponse = (response) => {
-    this.setState({ isLoading: false , message: 'loading' });
-    if (response.application_response_code.substr(0, 1) === '2') {
-      this.props.navigator.push({
-        title: 'Good',
-        passProps: {info: response.info},
-      });
-    } else {
-      this.setState({ message: 'Please try again.'});
-      alert('Please try again.');
-    }
-  };
-
-  _executeQuery = (query) => {
-    this.setState({ isLoading: true });
-    fetch(query)
-    .then(response => response.json())
-    .then(json => this._handleResponse(json.response))
-    .catch(error =>
-      this.setState({
-        isLoading: false,
-        message: 'Something bad happened ' + error
-      })
-    );
-    alert('Something bad happened ');
-  };
 
   _onLoginPressed = () => {
     Keyboard.dismiss;
