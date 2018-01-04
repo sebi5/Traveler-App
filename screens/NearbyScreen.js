@@ -104,7 +104,7 @@ export default class NearbyScreen extends React.Component {
         <Text>{text}</Text>
         <Button
           title="Go to Profile"
-          onPress={ () => navigate('Profile') }
+          onPress={ () => navigate('ProfileTemp') }
         />
         <ActionSheet
           ref={actionSheet => this.ActionSheet = actionSheet}
