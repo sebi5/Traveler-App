@@ -15,6 +15,7 @@ import {
   Permissions
 } from 'expo';
 import ActionSheet from 'react-native-actionsheet';
+import * as firebase from 'firebase';
 
 const ACTIONSHEET_TITLE = 'Update List';
 const ACTIONSHEET_OPTIONS = ['Hide My Location', 'View All', 'View Males', 'View Females', 'Cancel'];
@@ -100,6 +101,7 @@ export default class NearbyScreen extends React.Component {
     }
     return (
       <View style={styles.container}>
+        <Text>{firebase.auth().currentUser.uid}</Text>
         <Text>Nearby</Text>
         <Text>{text}</Text>
         <Button
