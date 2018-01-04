@@ -15,11 +15,12 @@ import {
   Permissions
 } from 'expo';
 import ActionSheet from 'react-native-actionsheet';
+import * as firebase from 'firebase';
 
 const ACTIONSHEET_TITLE = 'Update List';
-const ACTIONSHEET_OPTIONS = ['Hide My Location', 'View All', 'View Males', 'View Females', 'Cancel'];
-const CANCEL_INDEX = 4;
-const DESTRUCTIVE_INDEX = 4;
+const ACTIONSHEET_OPTIONS = ['Hide My Location', 'Show My Location', 'View All', 'View Males', 'View Females', 'Cancel'];
+const CANCEL_INDEX = 5;
+const DESTRUCTIVE_INDEX = 5;
 
 let showActionSheet = null;
 
@@ -100,11 +101,12 @@ export default class NearbyScreen extends React.Component {
     }
     return (
       <View style={styles.container}>
+        <Text>{firebase.auth().currentUser.uid}</Text>
         <Text>Nearby</Text>
         <Text>{text}</Text>
         <Button
           title="Go to Profile"
-          onPress={ () => navigate('Profile') }
+          onPress={ () => navigate('ProfileTemp') }
         />
         <ActionSheet
           ref={actionSheet => this.ActionSheet = actionSheet}

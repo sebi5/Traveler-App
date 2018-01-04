@@ -3,13 +3,40 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
+import WelcomeStack from './navigation/WelcomeStack';
+import * as firebase from 'firebase';
 
 export default class App extends React.Component {
-  state = {
-    isLoadingComplete: false,
-  };
+  constructor(props) {
+    super(props);
+    const config = {
+      apiKey: 'AIzaSyCvgtrI0fn0FHBYiIn4spb5Ac8vg1Ucd4g',
+      authDomain: 'traveler-84bf6.firebaseapp.com',
+      databaseURL: 'https://traveler-84bf6.firebaseio.com',
+      storageBucket: 'gs://traveler-84bf6.appspot.com',
+    };
+    firebase.initializeApp(config);
+
+    this.state = {
+      isLoadingComplete: false,
+      emptyScreen: true,
+      userAuthenticated: false,
+    }
+
+    firebase.auth().onAuthStateChanged((user) => {
+      this.setState({
+        emptyScreen: false,
+        userAuthenticated: user != null,
+      });
+    });
+  }
 
   render() {
+    let frontScreen;
+    if (!this.state.emptyScreen) {
+      frontScreen = this.state.userAuthenticated ? <RootNavigation /> : <WelcomeStack />;
+    }
+
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
@@ -23,7 +50,7 @@ export default class App extends React.Component {
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
-          <RootNavigation />
+          {frontScreen}
         </View>
       );
     }
