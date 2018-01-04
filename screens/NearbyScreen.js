@@ -16,6 +16,7 @@ import {
 } from 'expo';
 import ActionSheet from 'react-native-actionsheet';
 import * as firebase from 'firebase';
+import GeoFire from 'geofire';
 
 const ACTIONSHEET_TITLE = 'Update List';
 const ACTIONSHEET_OPTIONS = ['Hide My Location', 'Show My Location', 'View All', 'View Males', 'View Females', 'Cancel'];
@@ -57,6 +58,7 @@ export default class NearbyScreen extends React.Component {
     this.handlePress = this.handlePress.bind(this);
     this.showActionSheet = this.showActionSheet.bind(this);
     showActionSheet = this.showActionSheet;
+    this.geofire = new GeoFire(firebase.database().ref('locations'));
   }
 
   showActionSheet() {
@@ -89,6 +91,13 @@ export default class NearbyScreen extends React.Component {
 
     let location = await Location.getCurrentPositionAsync({});
     this.setState({ location });
+    const uid = firebase.auth().currentUser.uid;
+    this.geofire.set(uid, [location.coords.latitude, location.coords.longitude])
+    .then(function() {
+      alert("Provided key has been added to GeoFire");
+    }, function(error) {
+      alert("Error: " + error);
+    });
   };
 
   render() {
